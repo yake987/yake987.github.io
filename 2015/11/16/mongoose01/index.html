@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mongoose简单总结 | yakeZhang&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="工作一年多了,一直再用node.js和PHP写后端. node.js写后端 数据库用mongodb ,第三方数据库操作模块就用的mongoose,在此总结一下mongoose的基本使用
+Mongoose是什么Mongoose是MongoDB的一个对象模型工具，是基于node-mongodb-native开发的MongoDB nodejs驱动，可以在异步的环境下执行。同时它也是针对MongoDB操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongoose简单总结">
+<meta property="og:url" content="http://yake987.github.io/2015/11/16/mongoose01/index.html">
+<meta property="og:site_name" content="yakeZhang's blog">
+<meta property="og:description" content="工作一年多了,一直再用node.js和PHP写后端. node.js写后端 数据库用mongodb ,第三方数据库操作模块就用的mongoose,在此总结一下mongoose的基本使用
+Mongoose是什么Mongoose是MongoDB的一个对象模型工具，是基于node-mongodb-native开发的MongoDB nodejs驱动，可以在异步的环境下执行。同时它也是针对MongoDB操作">
+<meta property="og:updated_time" content="2016-01-18T08:27:44.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mongoose简单总结">
+<meta name="twitter:description" content="工作一年多了,一直再用node.js和PHP写后端. node.js写后端 数据库用mongodb ,第三方数据库操作模块就用的mongoose,在此总结一下mongoose的基本使用
+Mongoose是什么Mongoose是MongoDB的一个对象模型工具，是基于node-mongodb-native开发的MongoDB nodejs驱动，可以在异步的环境下执行。同时它也是针对MongoDB操作">
+  
+    <link rel="alternative" href="/atom.xml" title="yakeZhang&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">yakeZhang</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:zhangykvip@126.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/jaakzh" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yake987" title="GitHub"></a></li>
+                            
+                                <li id="知乎"><a class="知乎" target="_blank" href="https://www.zhihu.com/people/" title="知乎"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/mongoose/" style="font-size: 10px;">mongoose</a> <a href="/tags/redis/" style="font-size: 20px;">redis</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">yakeZhang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img lazy-src="/img/avatar.png" class="js-avatar">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">yakeZhang</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="mailto:zhangykvip@126.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/jaakzh" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yake987" title="GitHub"></a></li>
+                            
+                                <li id="知乎"><a class="知乎" target="_blank" href="https://www.zhihu.com/people/" title="知乎"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-mongoose01" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/16/mongoose01/" class="article-date">
+      <time datetime="2015-11-16T02:25:40.000Z" itemprop="datePublished">2015-11-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mongoose简单总结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoose/">mongoose</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>工作一年多了,一直再用node.js和PHP写后端. node.js写后端 数据库用mongodb ,第三方数据库操作模块就用的mongoose,在此总结一下mongoose的基本使用</p>
+<h4 id="Mongoose_u662F_u4EC0_u4E48"><a href="#Mongoose_u662F_u4EC0_u4E48" class="headerlink" title="Mongoose是什么"></a>Mongoose是什么</h4><p>Mongoose是MongoDB的一个对象模型工具，是基于node-mongodb-native开发的MongoDB nodejs驱动，可以在异步的环境下执行。同时它也是针对MongoDB操作的一个对象模型库，封装了MongoDB对文档的的一些增删改查等常用方法，让NodeJS操作Mongodb数据库变得更加灵活简单。<br><a id="more"></a></p>
+<h3 id="Mongoose_u80FD_u505A_u4EC0_u4E48"><a href="#Mongoose_u80FD_u505A_u4EC0_u4E48" class="headerlink" title="Mongoose能做什么"></a>Mongoose能做什么</h3><p>Mongoose，因为封装了对MongoDB对文档操作的常用处理方法，让NodeJS操作Mongodb数据库变得easy、easy、So easy!</p>
+<h4 id="Mongoose_u4F7F_u7528"><a href="#Mongoose_u4F7F_u7528" class="headerlink" title="Mongoose使用"></a>Mongoose使用</h4><h5 id="u5B89_u88C5mongoose"><a href="#u5B89_u88C5mongoose" class="headerlink" title="安装mongoose"></a>安装mongoose</h5><pre><code>npm install mongoose
+</code></pre><h5 id="u5F15_u7528mongoose"><a href="#u5F15_u7528mongoose" class="headerlink" title="引用mongoose"></a>引用mongoose</h5><pre><code>var mongoose = require(&quot;mongoose&quot;);
+</code></pre><h5 id="u4F7F_u7528_u201Dmongoose_u201D_u8FDE_u63A5_u6570_u636E_u5E93"><a href="#u4F7F_u7528_u201Dmongoose_u201D_u8FDE_u63A5_u6570_u636E_u5E93" class="headerlink" title="使用”mongoose”连接数据库"></a>使用”mongoose”连接数据库</h5><pre><code>var db = mongoose.connect(&quot;mongodb://user:pass@localhost:port/database&quot;); 
+</code></pre><p>执行下面代码检查默认数据库test，是否可以正常连接成功</p>
+<pre><code>var mongoose = require(&quot;mongoose&quot;);
+var db = mongoose.connect(&quot;mongodb://127.0.0.1:27017/test&quot;);
+db.connection.on(&quot;error&quot;, function (error) {
+  console.log(&quot;数据库连接失败：&quot; + error);
+  });
+  db.connection.on(&quot;open&quot;, function () {
+    console.log(&quot;------数据库连接成功！------&quot;);
+   }); 
+</code></pre><h4 id="u540D_u8BCD_u89E3_u91CA_Schema_2CModel_2CEntity"><a href="#u540D_u8BCD_u89E3_u91CA_Schema_2CModel_2CEntity" class="headerlink" title="名词解释 Schema,Model,Entity"></a>名词解释 Schema,Model,Entity</h4><p><strong>Schema</strong> —— 一种以文件形式存储的数据库模型骨架，无法直接通往数据库端，也就是说它不具备对数据库的操作能力，仅仅只是数据库模型在程序片段中的一种表现，可以说是数据属性模型(传统意义的表结构)，又或着是“集合”的模型骨架。<br>那如何去定义一个Schema，请看示例：</p>
+<pre><code>var mongoose = require(&quot;mongoose&quot;);
+var TestSchema = new mongoose.Schema({
+          name : { type:String },//属性name,类型为String
+          age  : { type:Number, default:0 },//属性age,类型为Number,默认为0
+          time : { type:Date, default:Date.now },
+          email: { type:String,default:&apos;&apos;}
+    });
+</code></pre><p><strong>Model</strong> —— 由Schema构造生成的模型，除了Schema定义的数据库骨架以外，还具有数据库操作的行为，类似于管理数据库属性、行为的类。<br>通过Schema来创建Model，如下示例：</p>
+<pre><code>var db = mongoose.connect(&quot;mongodb://127.0.0.1:27017/test&quot;);
+    //……
+   // 创建Model
+var TestModel = db.model(&quot;test1&quot;, TestSchema);
+</code></pre><p>拥有了Model，在后面就可以使用Model来进行增删改查的具体操作。</p>
+<pre><code>var TestSchema = new mongoose.Schema({
+       name : { type:String },//属性name,类型为String
+       age  : { type:Number, default:0 },//属性age,类型为Number,默认为0
+       time : { type:Date, default:Date.now },
+        email: { type:String,default:&apos;&apos;}
+  });
+var TestModel = db.model(&quot;test1&quot;, TestSchema);
+</code></pre><p><strong>Entity</strong> —— 由Model创建的实体，使用save方法保存数据，Model和  Entity都有能影响数据库的操作，但Model比Entity更具操作性。<br>使用Model创建Entity，如下示例：</p>
+<pre><code>var TestEntity = new TestModel({
+       name : &quot;jaak&quot;,
+       age  : 25,
+       email: &quot;jaak@qq.com&quot;
+});
+console.log(TestEntity.name); // jaak
+console.log(TestEntity.age); // 25
+</code></pre><h4 id="Schema_Model_Entity__u5B8C_u6574_u793A_u4F8B"><a href="#Schema_Model_Entity__u5B8C_u6574_u793A_u4F8B" class="headerlink" title="Schema Model Entity 完整示例"></a>Schema Model Entity 完整示例</h4><pre><code>var mongoose = require(&quot;mongoose&quot;);
+var db = mongoose.connect(&quot;mongodb://127.0.0.1:27017/test&quot;);
+var TestSchema = new mongoose.Schema({
+    name : { type:String },
+    age  : { type:Number, default:0 },
+    email: { type:String },
+    time : { type:Date, default:Date.now }
+});
+var TestModel = db.model(&quot;test1&quot;, TestSchema );
+var TestEntity = new TestModel({
+    name : &quot;helloworld&quot;,
+    age  : 28,
+    email: &quot;helloworld@qq.com&quot;
+});
+TestEntity.save(function(error,doc){
+  if(error){
+     console.log(&quot;error :&quot; + error);
+  }else{
+     console.log(doc);
+  }
+});
+</code></pre><ul>
+<li>Schema：数据库集合的模型骨架，或者是数据属性模型传统意义的表结构。</li>
+<li>Model ：通过Schema构造而成，除了具有Schema定义的数据库骨架以外，还可以具体的操作数据库。</li>
+<li>Entity：通过Model创建的实体，它也可以操作数据库。<br>Schema、Model、Entity的关系请牢记，Schema生成Model，Model创造Entity，Model和Entity都可对数据库操作造成影响，但Model比Entity更具操作性</li>
+</ul>
+<h4 id="Model__u57FA_u672C_u7684find_u67E5_u8BE2"><a href="#Model__u57FA_u672C_u7684find_u67E5_u8BE2" class="headerlink" title="Model 基本的find查询"></a>Model 基本的find查询</h4><p>使用Model进行基本的find查询： Model.find(查询条件,callback);</p>
+<pre><code>Model.find({},function(error,docs){
+    //若没有向find传递参数，默认的是显示所有文档
+ });
+Model.find({ &quot;age&quot;: 28 }, function (error, docs) {
+   if(error){
+     console.log(&quot;error :&quot; + error);
+   }else{
+     console.log(docs); //docs: age为28的所有文档
+   }
+ }); 
+</code></pre><h4 id="Model__u4FDD_u5B58_u65B9_u6CD5"><a href="#Model__u4FDD_u5B58_u65B9_u6CD5" class="headerlink" title="Model 保存方法"></a>Model 保存方法</h4><p> 语法：Model.create(文档数据, callback))<br> 示例 :</p>
+<pre><code>Model.create({ name:&quot;model_create&quot;, age:26}, function(error,doc){
+       if(error) {
+           console.log(error);
+       } else {
+           console.log(doc);
+       }
+   });
+</code></pre><h4 id="Entity__u4FDD_u5B58_u65B9_u6CD5"><a href="#Entity__u4FDD_u5B58_u65B9_u6CD5" class="headerlink" title="Entity 保存方法"></a>Entity 保存方法</h4><p>语法 : Entity.save(文档数据, callback))<br>示例:</p>
+<pre><code>var Entity = new Model({name:&quot;entity_save&quot;,age: 27});  
+Entity.save(function(error,doc) {
+    if(error) {
+        console.log(error);
+    } else {
+        console.log(doc);
+    }
+});
+</code></pre><h4 id="Model__u6570_u636E_u66F4_u65B0"><a href="#Model__u6570_u636E_u66F4_u65B0" class="headerlink" title="Model 数据更新"></a>Model 数据更新</h4><p>  语法 : Model.update(查询条件,更新对象,callback);<br>  示例:</p>
+<pre><code>var conditions = {name : &apos;test_update&apos;};
+var update = {$set : { age : 16 }};
+Model.update(conditions, update, function(error){
+    if(error) {
+        console.log(error);
+    } else {
+        console.log(&apos;Update success!&apos;);
+    }
+});
+</code></pre><h4 id="Model__u5220_u9664_u6570_u636E"><a href="#Model__u5220_u9664_u6570_u636E" class="headerlink" title="Model 删除数据"></a>Model 删除数据</h4><p>语法 : Model.remove(查询条件,callback);<br>示例:</p>
+<pre><code>var conditions = { name: &apos;tom&apos; };
+Model.remove(conditions, function(error){
+    if(error) {
+        console.log(error);
+    } else {
+        console.log(&apos;Delete success!&apos;);
+    }
+});
+</code></pre><h4 id="Model_find_u8FC7_u6EE4_u67E5_u8BE2"><a href="#Model_find_u8FC7_u6EE4_u67E5_u8BE2" class="headerlink" title="Model find过滤查询"></a>Model find过滤查询</h4><p>语法 :  属性过滤 Model.find(Conditions,<em>field</em>,callback);<br><em>field</em> 说明：我们只需要把显示的属性设置为大于零的数就可以，当然1是最好理解的_id是默认返回 如果不要显示加上(“_id”:0)<br>但是 对其他不需要显示的属性且不是_id 如果设置为0的话将会抛异常或查询无果。<br>示例：<br>//返回只包含一个键值name、age的所有记录</p>
+<pre><code>Model.find({},{name:1, age:1, _id:0}，function(err,docs){
+   //docs 查询结果集
+})
+</code></pre><h4 id="Model_findOne_u7684_u57FA_u672C_u7528_u6CD5"><a href="#Model_findOne_u7684_u57FA_u672C_u7528_u6CD5" class="headerlink" title="Model findOne的基本用法"></a>Model findOne的基本用法</h4><p>与find相同，但只返回单个文档，也就说当查询到即一个符合条件的数据时，将停止继续查询，并返回查询结果。<br>单条数据查询语法: Model.findOne(Conditions,callback);</p>
+<pre><code>Model.findOne({ age: 27}, function (err, doc){
+    // 查询符合age等于27的第一条数据
+    // doc是查询结果
+ });
+</code></pre><p>findOne方法，只返回第一个符合条件的文档数据。</p>
+<h4 id="Model_findById_u7684_u57FA_u672C_u7528_u6CD5"><a href="#Model_findById_u7684_u57FA_u672C_u7528_u6CD5" class="headerlink" title="Model findById的基本用法"></a>Model findById的基本用法</h4><p>与findOne相同，但它只接收文档的_id作为参数，返回单个文档。<br>单条数据查询语法: Model.findById(_id, callback);</p>
+<pre><code>TestModel.findById(&apos;_id&apos;, function (err, doc){
+ //doc 查询结果文档
+});
+</code></pre><h4 id="Model__u6761_u4EF6_u67E5_u8BE2"><a href="#Model__u6761_u4EF6_u67E5_u8BE2" class="headerlink" title="Model 条件查询"></a>Model 条件查询</h4><pre><code>&quot;$lt&quot;(小于)，&quot;$lte&quot;(小于等于),&quot;$gt&quot;(大于)，&quot;$gte&quot;(大于等于)，&quot;$ne&quot;(不等于)，&quot;$in&quot;(可单值和多个值的匹配)，&quot;$or&quot;(查询多个键值的任意给定值)，&quot;$exists&quot;(表示是否存在的意思)&quot;$all&quot;
+</code></pre><p><strong>使用$gt(&gt;)、$lt(&lt;)、$lte(&lt;=)、$gte(&gt;=)操作符进行排除性的查询，如下示例</strong></p>
+<pre><code>Model.find({&quot;age&quot;:{&quot;$gt&quot;:18}},function(error,docs){
+   //查询所有nage大于18的数据
+});
+Model.find({&quot;age&quot;:{&quot;$lt&quot;:60}},function(error,docs){
+   //查询所有nage小于60的数据
+});
+Model.find({&quot;age&quot;:{&quot;$gt&quot;:18,&quot;$lt&quot;:60}},function(error,docs){
+   //查询所有nage大于18小于60的数据
+});
+</code></pre><p><strong>$ne(!=)操作符的含义相当于不等于、不包含，查询时我们可通过它进行条件判定，具体使用方法如下</strong></p>
+<pre><code>Model.find({ age:{ $ne:24}},function(error,docs){
+    //查询age不等于24的所有数据
+});
+Model.find({name:{$ne:&quot;tom&quot;},age:{$gte:18}},function(error,docs){
+  //查询name不等于tom、age&gt;=18的所有数据
+});
+</code></pre><p><strong>和$ne操作符相反，$in相当于包含、等于，查询时查找包含于指定字段条件的数据。具体使用方法如下</strong></p>
+<pre><code>Model.find({ age:{ $in: 20}},function(error,docs){
+   //查询age等于20的所有数据
+}); 
+Model.find({ age:{$in:[20,30]}},function(error,docs){
+  //可以把多个值组织成一个数组
+}); 
+</code></pre><p><strong>$or操作符，可以查询多个键值的任意给定值，只要满足其中一个就可返回，用于存在多个条件判定的情况下使用，如下示例</strong></p>
+<pre><code>Model.find({&quot;$or&quot;:[{&quot;name&quot;:&quot;yaya&quot;},{&quot;age&quot;:28}]},function(error,docs){
+  //查询name为yaya或age为28的全部文档
+});
+</code></pre><p><strong>$exists操作符，可用于判断某些关键字段是否存在来进行条件查询。如下示例</strong></p>
+<pre><code>Model.find({name: {$exists: true}},function(error,docs){
+  //查询所有存在name属性的文档
+});
+Model.find({telephone: {$exists: false}},function(error,docs){
+  //查询所有不存在telephone属性的文档
+});
+</code></pre><p><strong>limit的基本用法</strong><br>限制返回数量语法：Model.find(Conditions,fields,<strong>options</strong>,callback);<br>示例：</p>
+<pre><code>Model.find({},null,**{limit:20}**,function(err,docs){
+    console.log(docs);
+});
+</code></pre><p><strong>sort的基本用法</strong><br>对结果排序语法：Model.find(Conditions,fields,options,callback);<br>示例：</p>
+<pre><code>Model.find({},null,{sort:{age:-1}},function(err,docs){
+  //查询所有数据，并按照age降序顺序返回数据docs
+});
+</code></pre><p>sort函数可以将查询结果数据进行排序操作，该函数的参数是一个或多个键/值对，<br>键代表要排序的键名，值代表排序的方向，1是升序，-1是降序</p>
+<p><strong>skip的基本用法</strong><br>跳过数量：find(Conditions,fields,<strong>options</strong>,callback);</p>
+<pre><code>Model.find({},null,**{skip:4}**,function(err,docs){
+    console.log(docs);
+});
+</code></pre><p>如果查询结果数量中少于4个的话，则不会返回任何结果。</p>
+<p><strong>skip limit sort 联合查询 示例</strong></p>
+<pre><code>Model.find({},null,{skip:0,limit:2,sort:{age:1}},function(err,docs){
+ // ...
+});
+</code></pre><h4 id="u94FE_u5F0F_u67E5_u8BE2"><a href="#u94FE_u5F0F_u67E5_u8BE2" class="headerlink" title="链式查询"></a>链式查询</h4><p>这种方式相对直接查询，分的比较明细，如果不带 callback，则返回 query，<br>query 表示没有执行的预编译查询语句，该 query 对象执行的方法都将返回自己，<br>只有在执行 exec 方法时才执行查询，而且必须有回调。</p>
+<pre><code>var query = Model
+.find({ age: 24})
+.limit(10)
+.skip(5);
+query.exec(function(err,docs){
+  if(err){
+     //...
+    }else{ 
+     console.log(docs);
+    }
+});
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2015/11/24/music01/">
+                    音乐欣赏
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2015/10/13/article01/">
+                    Hexo入住
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mongoose_u662F_u4EC0_u4E48"><span class="toc-number">1.</span> <span class="toc-text">Mongoose是什么</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mongoose_u80FD_u505A_u4EC0_u4E48"><span class="toc-number"></span> <span class="toc-text">Mongoose能做什么</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mongoose_u4F7F_u7528"><span class="toc-number">1.</span> <span class="toc-text">Mongoose使用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#u5B89_u88C5mongoose"><span class="toc-number">1.1.</span> <span class="toc-text">安装mongoose</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#u5F15_u7528mongoose"><span class="toc-number">1.2.</span> <span class="toc-text">引用mongoose</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#u4F7F_u7528_u201Dmongoose_u201D_u8FDE_u63A5_u6570_u636E_u5E93"><span class="toc-number">1.3.</span> <span class="toc-text">使用”mongoose”连接数据库</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u540D_u8BCD_u89E3_u91CA_Schema_2CModel_2CEntity"><span class="toc-number">2.</span> <span class="toc-text">名词解释 Schema,Model,Entity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Schema_Model_Entity__u5B8C_u6574_u793A_u4F8B"><span class="toc-number">3.</span> <span class="toc-text">Schema Model Entity 完整示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model__u57FA_u672C_u7684find_u67E5_u8BE2"><span class="toc-number">4.</span> <span class="toc-text">Model 基本的find查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model__u4FDD_u5B58_u65B9_u6CD5"><span class="toc-number">5.</span> <span class="toc-text">Model 保存方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Entity__u4FDD_u5B58_u65B9_u6CD5"><span class="toc-number">6.</span> <span class="toc-text">Entity 保存方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model__u6570_u636E_u66F4_u65B0"><span class="toc-number">7.</span> <span class="toc-text">Model 数据更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model__u5220_u9664_u6570_u636E"><span class="toc-number">8.</span> <span class="toc-text">Model 删除数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model_find_u8FC7_u6EE4_u67E5_u8BE2"><span class="toc-number">9.</span> <span class="toc-text">Model find过滤查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model_findOne_u7684_u57FA_u672C_u7528_u6CD5"><span class="toc-number">10.</span> <span class="toc-text">Model findOne的基本用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model_findById_u7684_u57FA_u672C_u7528_u6CD5"><span class="toc-number">11.</span> <span class="toc-text">Model findById的基本用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model__u6761_u4EF6_u67E5_u8BE2"><span class="toc-number">12.</span> <span class="toc-text">Model 条件查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#u94FE_u5F0F_u67E5_u8BE2"><span class="toc-number">13.</span> <span class="toc-text">链式查询</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2015/11/24/music01/" title="上一篇: 音乐欣赏">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2015/10/13/article01/" title="下一篇: Hexo入住">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2015/12/10/node01/">node.js</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/28/redis03/">redis命令学习(三)</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/27/redis02/">redis命令学习(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/24/redis01/">redis 命令学习(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/24/music01/">音乐欣赏</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/16/mongoose01/">mongoose简单总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/13/article01/">Hexo入住</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 yakeZhang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的静态博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减双栏 Hexo 博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        <div class="visit">
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <span id="site-visit" >本站到访数: 
+                    <span id="busuanzi_value_site_uv"></span>
+                </span>
+            </span>
+            <span id="busuanzi_container_page_pv" style='display:none'>
+                <span id="page-visit">, 本页阅读量: 
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+            </span>
+        </div>
+    </div>
+</footer>
+    </div>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
